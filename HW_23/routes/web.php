@@ -26,11 +26,15 @@ Route::get('/welcome', function () {
     return "Добро пожаловать в Laravel!";
 });
 
-Route::get('/user/{id?}', function (?string $id = 'Пользователь анонимен') {
-    return "Пользователь с ID: $id";
+Route::get('/user/{id?}', function (int $id = null) {
+    if ($id === null) {
+        return "Пользователь анонимен";
+    } else {
+        return "Пользователь с ID: $id";
+    }
 });
 
-Route::get('/post/{slug?}', function () {
+Route::get('/post/{slug}', function () {
     return 'Верно';
 })->where('slug', '^[a-z0-9-]+$');
 
@@ -40,17 +44,8 @@ Route::get('/submit-contact-form/create', function () {
     return view('form');
 });
 
-Route::get('/greet/{name?}', function (string $name = null) {
+Route::get('/greet/{name}', function (string $name = null) {
     return view('greet', ['name' => $name]);
-});
-
-Route::get('/api/users', function () {
-    $users = [
-        ['id' => 1, 'name' => 'Igor', 'surname' => 'Nesterovich', 'age' => 24],
-        ['id' => 2, 'name' => 'Maksim', 'surname' => 'Volkov', 'age' => 18],
-        ['id' => 3, 'name' => 'Vlad', 'surname' => 'Malkovich', 'age' => 31]
-    ];
-    return response()->json($users);
 });
 
 Route::get('/time', function () {
@@ -67,4 +62,4 @@ Route::get('/contact/create', [ContactController::class, 'create']);
 
 Route::post('/contact', [ContactController::class, 'valid']);
 
-Route::get('/calculate/{operation}/{number1}/{number2}', [CalculateController::class, 'show']);
+Route::get('/calculate/{operation}/{num1}/{num2}', [CalculateController::class, 'show']);
